@@ -1,12 +1,15 @@
 ##initialization
 from flask import Flask,render_template,session,redirect,url_for,flash
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate,MigrateCommand
 from flask_bootstrap import Bootstrap
 from flask_script import Manager,Shell
+from flask_mail import Mail,Message
 from flask_wtf import FlaskForm
 from wtforms import StringField,SubmitField
 from wtforms.validators import Required
 import os
+from threading import Thread
 
 base_dir = os.path.abspath(os.path.dirname(__file__))
 
@@ -14,12 +17,37 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] ='nathankimutai'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////' + os.path.join(base_dir,'data.sqlite3')
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
+app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+app.config['BLOGGING_MAIL_SUBJECT_PREFIX'] = '[Blogging]'
+app.config['BLOGGING_MAIL_SENDER'] = 'Talent Aquisition <hr@bloggin.com'
+app.config['BLOGGING_ADMIN'] = os.environ.get('BLOGGING_ADMIN')
+
 
 db=SQLAlchemy(app)
 manager = Manager(app)
+mail = Mail(app)
 bootstrap = Bootstrap(app)
+migrate = Migrate(app,db)
+manager.add_command('db',MigrateCommand)
 
 
+
+def send_mail(to,subject,template, **kwargs):
+    msg = Message(app.config['BLOGGING_MAIL_SUBJECT_PREFIX']+subject,
+            app.config['BLOGGING_MAIL_SENDER'], recipients=[to])
+    msg.body = render_template(template + ".txt",**kwargs)
+    msg.html = render_template(template + '.hmtl',**kwargs)
+    thread = Thread(target=send_async_mail,args=[app,msg])
+    thread.start()
+    return thread
+
+def send_async_mail(app,msg):
+    with app.app_context():
+        mail.send(msg)
 
 def make_shell_context():
     return dict(app=app,db=db,User=User,Role=Role)
@@ -69,6 +97,8 @@ def home():
             user = User(username=form.name.data)
             db.session.add(user)
             session['known'] = False 
+            if app.config['BLOGGING_ADMIN']:
+                send_email(app.config['BLOGGING_ADMIN'],'New user','mail/new_user',user=user)
         else:
             session['known'] = True
         # old_name = session.get('name')
