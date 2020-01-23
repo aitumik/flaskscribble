@@ -2,7 +2,7 @@
 from flask import Flask,render_template,session,redirect,url_for,flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_bootstrap import Bootstrap
-from flask_script import Manager
+from flask_script import Manager,Shell
 from flask_wtf import FlaskForm
 from wtforms import StringField,SubmitField
 from wtforms.validators import Required
@@ -21,12 +21,17 @@ bootstrap = Bootstrap(app)
 
 
 
+def make_shell_context():
+    return dict(app=app,db=db,User=User,Role=Role)
+
+manager.add_command('shell',Shell(make_context=make_shell_context))
+
 ####### Model #######
 class Role(db.Model):
-    __tablename__ = 'role'
+    __tablename__ = 'roles'
     id = db.Column(db.Integer,primary_key =True)
-    name = db.Column(db.String(66),unique=True)
-    users = db.relationship('User',backref='roles')
+    name = db.Column(db.String(64),unique=True)
+    users = db.relationship('User',backref='role',lazy='dynamic')
 
     def __repr__(self):
         return "<Role %r>" % self.name
@@ -59,13 +64,21 @@ def home():
     form = NameForm()
     
     if form.validate_on_submit():
-        old_name = session.get('name')
-        if old_name is not None and old_name != form.name.data:
-            flash("Looks like you have chaged your name")
+        user = User.query.filter_by(username=form.name.data).first()
+        if user is None:
+            user = User(username=form.name.data)
+            db.session.add(user)
+            session['known'] = False 
+        else:
+            session['known'] = True
+        # old_name = session.get('name')
+        # if old_name is not None and old_name != form.name.data:
+        #     flash("Looks like you have chaged your name")
         session['name'] = form.name.data
+        form.name.data = ""
         return redirect(url_for('home'))
 
-    return render_template("index.html",form=form,name=session.get('name'))
+    return render_template("index.html",form=form,name=session.get('name'),known=session.get('known',False))
 
 
 @app.route("/user/<name>")
