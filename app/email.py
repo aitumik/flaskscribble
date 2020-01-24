@@ -1,4 +1,6 @@
-try:
-    from main import forms as main_blueprint
-except ImportError as errr:
-    print(errr)
+from flask_mail import Mail,Message
+from threading import Thread
+
+def send_async_mail(app,msg):
+    pass
+
