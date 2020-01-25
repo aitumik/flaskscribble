@@ -3,6 +3,22 @@ from . import auth
 from flask_login import login_user,logout_user,login_required
 from ..models import User
 from .forms import LoginForm,RegistrationForm
+from .. import db
+from ..email import send_email
+
+
+@auth.route("/confirm/<token>")
+@login_required
+def confirm(token):
+    if current_user.confirmed:
+        return redirect(url_for('main.home'))
+    if current_user.confirm(token):
+        flash("You have confirmed you account. Thanks!")
+    else:
+        flash("The confirmation link is invalid or has expired")
+    return redirect(url_for('main.home'))
+
+    
 
 @auth.route("/login",methods=['GET','POST'])
 def login():
@@ -30,7 +46,10 @@ def register():
     if form.validate_on_submit():
         user = User(email=form.email.data,username=form.username.data,password=form.password.data)
         db.session.add(user)
-        flash("You can now sign in ")
-        return redirect(url_for('auth.login'))
+        db.session.commit()
+        token = user.generate_confirmation_token()
+        send_email(user.email,'Confirm your account','auth/email/confirm',user=user,token=token)
+        flash("A confirmation email has been sent to you by email")
+        return redirect(url_for('main.home'))
     return render_template("auth/register.html",form=form)
 
