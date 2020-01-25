@@ -6,7 +6,7 @@ class BasicsTestCase(unittest.TestCase):
     def setUp(self):
         self.app = create_app('testing')
         self.ctx = self.app.app_context()
-        self.ctx = self.ctx.push()
+        self.ctx.push()
         db.create_all()
 
     def tearDown(self):
@@ -19,4 +19,3 @@ class BasicsTestCase(unittest.TestCase):
 
     def test_app_is_testing(self):
         self.assertTrue(current_app.config['TESTING'])
-

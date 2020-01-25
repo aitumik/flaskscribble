@@ -7,7 +7,7 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'hardtoguessstring'
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     BLOGGING_MAIL_PREFIX = '[Blogging]'
-    BLOGGING_MAIL_SENDER = 'Blogging Admin <blogging@example.com>'
+    BLOGGING_MAIL_SENDER = os.environ.get('MAIL_USERNAME')
     BLOGGING_ADMIN = os.environ.get('BLOGGING_ADMIN')
 
     @staticmethod
@@ -22,10 +22,12 @@ class DevelopmentConfig(Config):
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     SQLALCHEMY_DATABASE_URI = "sqlite:////" + os.path.join(base_dir,'data-dev.sqlite')
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = "sqlite:////" + os.path.join(base_dir,'data-test.sqlite')
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 
 class ProductionConfig(Config):
