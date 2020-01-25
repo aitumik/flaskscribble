@@ -1,11 +1,13 @@
-from flask import render_template,flash,url_for,redirect,request
+from flask import render_template,flash,url_for,redirect,request,g
 from . import auth
-from flask_login import login_user,logout_user,login_required
+from flask_login import login_user,logout_user,login_required,current_user
+from .. import login_manager
 from ..models import User
 from .forms import LoginForm,RegistrationForm
 from .. import db
 from ..email import send_email
 
+#current_user = g.user
 
 @auth.route("/confirm/<token>")
 @login_required
@@ -18,7 +20,27 @@ def confirm(token):
         flash("The confirmation link is invalid or has expired")
     return redirect(url_for('main.home'))
 
-    
+## We are going to filter uncofirmed accounts
+
+@auth.before_app_request
+def before_request():
+    if current_user.is_authenticated and not current_user.confirmed and request.endpoint[:5] !='auth.':
+        return redirect(url_for('auth.unconfirmed'))
+
+@auth.route("/unconfirmed")
+def unconfirmed():
+    if current_user.is_anonymous() or current_user.confirmed:
+        return redirect(url_for('main.home'))
+    return render_template("auth/unconfirmed.html")
+
+@auth.route("/confirm")
+@login_required
+def resend_confirmation():
+    token = current_user.generate_confirmation_token()
+    send_email("auth/email/confirm",user,token=token)
+    flash("A new confirmation link has been sent to you by email.")
+    return redirect(url_for('main.home'))
+
 
 @auth.route("/login",methods=['GET','POST'])
 def login():
