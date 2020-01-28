@@ -30,6 +30,7 @@
 
 
     {% if user == current_user %}
+    <img class="img-rounded profile-thumbnail" src="{{ user.gravatar(size=256) }}">
     <a href="{{url_for('main.edit_profile')}}" class="btn btn-default">Edit profile</a>
     {% endif %}
 </div>
