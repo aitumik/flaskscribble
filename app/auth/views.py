@@ -7,7 +7,7 @@ from .forms import LoginForm,RegistrationForm
 from .. import db
 from ..email import send_email
 
-#current_user = g.user
+
 
 @auth.route("/confirm/<token>")
 @login_required
