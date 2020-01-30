@@ -4,15 +4,12 @@
 
 {% block page_content %}
 <div class="page-header">
-    <h1>Hello {%if current_user.is_authenticated %}{{ current_user.email }}{% else %}Stranger{% endif %}</h1>
-    {% if not known %}
-    <p>Pleased to meet you</p>
-    {% else %}
-    <p>Happy to see you again</p>
-    {% endif %}
+    <h1>Posts</h1>
 </div>
-
+<div>
+{% if current_user.can(Permission.WRITE_ARTICLES) %}
 {{ wtf.quick_form(form) }}
-
-
+{% endif %}
+</div>
+{% include '_posts.html' %}
 {% endblock %}

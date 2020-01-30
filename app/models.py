@@ -80,6 +80,8 @@ class User(UserMixin, db.Model):
     about_me = db.Column(db.Text())
     member_since = db.Column(db.DateTime(),default=datetime.utcnow)  
     last_seen = db.Column(db.DateTime(),default=datetime.utcnow)
+    avatar_hash = db.Column(db.String(32))
+    posts = db.relationship('Post',backref='author',lazy='dynamic')
     role = db.Column(db.Integer, db.ForeignKey('roles.id'))
 
     def __init__(self, **kwargs):
@@ -89,7 +91,31 @@ class User(UserMixin, db.Model):
                 self.role = Role.query.filter_by(permissions=0xff).first()
             if self.role is None:
                 self.role = Role.query.filter_by(default=True).first()
+        if self.email is not None and self.avatar_hash is None:
+            self.avatar_hash = hashlib.md5(self.email.encode('utf-8')).hexdigest()
+    
+    @staticmethod
+    def generate_fake(count=100):
+        from sqlalchemy.exc import IntegrityError
+        from random import seed
+        import forgery_py
 
+        seed()
+        for i in range(count):
+            u = User(email=forgery_py.internet.email_address(),
+                    username=forgery_py.internet.user_name(True),
+                    password=forgery_py.lorem_ipsum.word(),
+                    confirmed=True,
+                    name=forgery_py.name.full_name(),
+                    location=forgery_py.address.city(),
+                    about_me = forgery_py.lorem_ipsum.sentence(),
+                    member_since = forgery_py.date.date(True))
+            db.session.add(u)
+
+            try:
+                db.session.commit()
+            except Exception as e:
+                db.session.rollback()
     @property
     def password(self):
         raise AttributeError("Password is not readable")
@@ -138,6 +164,14 @@ class User(UserMixin, db.Model):
         return "{url}/{hash}?s={size}&d={default}&r={rating}".format(url=url,hash=hash,size=size,default=default,rating=rating)
 
 
+    def change_email(self,token):
+        self.email = new_email
+        self.avatar_hash = hashlib.md5(self.email.encode('utf-8')).hexdigest()
+        db.session.add(self)
+        return True
+
+
+
     def __repr__(self):
         return "<User %r>" % self.username
 
@@ -148,6 +182,29 @@ class AnyonymousUser(AnonymousUserMixin):
 
     def is_administrator(self):
         return False
+
+class Post(db.Model):
+    __tablename__ = 'posts'
+    id = db.Column(db.Integer,primary_key = True)
+    body = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime,index=True,default = datetime.utcnow)
+    author_id = db.Column(db.Integer,db.ForeignKey("users.id"))
+    
+
+    @staticmethod
+    def generate_fake(count=100):
+        from random import seed,randint
+        import forgery_py
+
+        seed()
+        user_count = User.query.count()
+        for i in range(count):
+            u = User.query.offset(randint(0,user_count -1)).first()
+            p = Post(body = forgery_py.lorem_ipsum.sentences(randint(1,3)),
+                    timestamp=forgery_py.date.date(True),
+                    author=u)
+            db.session.add(p)
+            db.session.commit()
 
 
 login_manager.anonymous_user = AnyonymousUser
