@@ -16,7 +16,7 @@ def home():
         db.session.add(post)
         return redirect(url_for(".home"))
     posts = Post.query.order_by(Post.timestamp.desc()).all()
-    return render_template("index.html",form=form,posts=posts,form=form)
+    return render_template("index.html",form=form,posts=posts)
 
 @main.route("/edit-profile",methods=["GET","POST"])
 @login_required

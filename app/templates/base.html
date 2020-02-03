@@ -4,9 +4,9 @@
 {{ super() }}
 <link rel="shorcut icon" href="{{url_for('static',filename='favico.ico')}}" type="image/x-icon">
 <link rel="icon" href="{{ url_for('static', filename = 'favicon.ico') }}" type="image/x-icon">
-<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
-<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script> -->
-<!-- <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}"> -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+<link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
 <!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
 {% endblock %}
 {% block title %}
@@ -16,7 +16,7 @@ Flasky
 {% block navbar %}
 
 
-<!-- 
+
 <nav style="border-radius: 0%;" class="navbar is-black" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <a class="navbar-item" href="https://bulma.io">
@@ -68,10 +68,10 @@ Flasky
 
 
     </div>
-  </nav> -->
+  </nav>
 
-
-<!-- <nav class="navbar is-black" role="navigation" aria-label="main navigation">
+<!-- 
+<nav class="navbar is-black" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <a class="navbar-item" href="/">
         <h4>Flasky</h4>
@@ -118,7 +118,7 @@ Flasky
     </div>
   </nav> -->
 
-<div class="navbar navbar-inverse" role="navigation">
+<!-- <div class="navbar navbar-inverse" role="navigation">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -144,7 +144,7 @@ Flasky
             </ul>
         </div>
     </div>
-</div>
+</div> -->
 
 {% endblock %}
 
