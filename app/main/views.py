@@ -15,7 +15,12 @@ def home():
         post = Post(body = form.post.data,author=current_user._get_current_object())
         db.session.add(post)
         return redirect(url_for(".home"))
-    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    
+    # adding the pagination here
+    page = request.args.get('page',1,type=int)
+    pagination = Post.query.order_by(Post.timestapm.desc()).paginate(page,per_page=7,error_out = False)
+    posts = pagination.items()
+    #posts = Post.query.order_by(Post.timestamp.desc()).all()
     return render_template("index.html",form=form,posts=posts)
 
 @main.route("/edit-profile",methods=["GET","POST"])
