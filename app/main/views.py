@@ -17,11 +17,11 @@ def home():
         return redirect(url_for(".home"))
     
     # adding the pagination here
-    page = request.args.get('page',1,type=int)
-    pagination = Post.query.order_by(Post.timestapm.desc()).paginate(page,per_page=7,error_out = False)
-    posts = pagination.items()
+    #page = request.args.get('page',1,type=int)
+    #pagination = Post.query.order_by(Post.timestapm.desc()).paginate(page,per_page=7,error_out = False)
+    #posts = pagination.items()
     #posts = Post.query.order_by(Post.timestamp.desc()).all()
-    return render_template("index.html",form=form,posts=posts)
+    return render_template("index.html",form=form)
 
 @main.route("/edit-profile",methods=["GET","POST"])
 @login_required
