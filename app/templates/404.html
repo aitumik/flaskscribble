@@ -3,7 +3,9 @@
 
 {% block page_content %}
 <div class="page-header">
-    <h1>Not found</h1>
+    <div class="error-image">
+        <img style="height: 100%; background-repeat: no-repeat;" class="error-image" src="{{url_for('static',filename='img/404.png')}}" alt="">
+    </div>
 </div>
 
 {% endblock %}

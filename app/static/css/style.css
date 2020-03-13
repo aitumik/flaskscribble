@@ -1,0 +1,25 @@
+/* 
+Trying to make the site beautiful
+ */
+
+ .form-header {
+     margin-top: 20px;
+ }
+
+ .login-frame {
+     border-color: black;
+     border-style: solid;
+     border-width: 3px;
+     box-shadow: black;
+     margin:auto;
+     width: 40%;
+     padding: 20px;
+     margin-top: 10px;
+ }
+
+ .error-image {
+     text-align: center;
+     margin-top: 20px;
+     height: 500px;
+     
+ }
