@@ -26,15 +26,15 @@ Flasky
   </button>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                 {% if current_user.is_authenticated %}
-                <li>
-                    <a href="{{url_for('main.user',username=current_user.username)}}">Profile</a>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('main.user',username=current_user.username)}}">Profile</a>
                 </li>
-                <li><a href="{{ url_for('auth.logout') }}">Sign Out</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Sign Out</a></li>
                 {% else %}
-                <li><a href="{{ url_for('auth.login') }}">Sign In</a></li>
-                <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Sign In</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.register') }}">Register</a></li>
                 {% endif %}
             </ul>
         </div>

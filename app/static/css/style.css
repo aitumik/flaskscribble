@@ -23,3 +23,55 @@ Trying to make the site beautiful
      height: 500px;
      
  }
+
+ form#new-message {
+    border-radius: 0;
+    padding: 1em;
+    border-bottom: 0.1em solid #CEE4F5;
+    background-color: #EBF4FB;
+ }
+
+ul#feed {
+    margin: 0;
+}
+ul#feed li {
+    padding: 1em 1em;
+}
+ul#feed .feed-avatar {
+    width: 13%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+ul#feed .feed-post {
+    width: 80%;
+    display: inline-block;
+    margin-left: 2%;
+}
+
+ul#feed .feed-post h5 {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+ul#feed .feed-post h5 > small {
+    font-size: 1.2rem;
+}
+
+ul#feed .action-list {
+    margin-left: 13%;
+    padding-left: 1em;
+}
+
+ul#feed .action-list a {
+    width: 15%;
+    display: inline-block;
+}
+ul#feed .action-list a:hover {
+    text-decoration: none;
+}
+
+ul#feed .action-list .retweet-count {
+    padding-left: 0.2em;
+    font-weight: bold;
+}
