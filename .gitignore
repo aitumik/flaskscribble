@@ -1,7 +1,6 @@
 .vscode/
 __pycache__/
 venv/
-migrations/
 data.sqlite3
 data-dev.sqlite
 data-test.sqlite
