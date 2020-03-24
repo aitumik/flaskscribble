@@ -19,16 +19,33 @@ class Permission:
 
 @login_manager.user_loader
 def load_user(user_id):
+    """
+    This function loads the user from the database given and id
+    user_id must be of type integer
+    It is a call back function
+    Example:
+    user = load_user(1)
+    """
     return User.query.get(int(user_id))
 
 
 class Role(db.Model):
+    """
+    This table is used for storing roles in the db
+    There are several roles
+    """
     __tablename__ = 'roles'
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True)
     default = db.Column(db.Boolean, default=False, index=True)
     permissions = db.Column(db.Integer)
+
+    #users with the this role
     users = db.relationship('User', backref='roles', lazy='dynamic')
+
+
+    #TODO work with this roles more
 
     @staticmethod
     def insert_roles():
@@ -55,11 +72,20 @@ class Role(db.Model):
 
 
     def __repr__(self):
+        """
+        Readable representation of roles
+        """
         return "<Role %r>" % self.name
 
 
 class User(UserMixin, db.Model):
+    """
+    This table is used to store the users and their details like emails
+    and password
+    """
+    
     __tablename__ = "users"
+
     id = db.Column(db.Integer, primary_key=True)
     confirmed = db.Column(db.Boolean, default=False)
     email = db.Column(db.String(64), unique=True, index=True)
