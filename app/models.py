@@ -51,17 +51,7 @@ class Role(db.Model):
                 role.default = roles[r][1]
                 db.session.add(role)
         db.session.commit()
-    
 
-
-    def gravatar(self,size=100,default='identicon',rating='g'):
-        if request.is_secure:
-            url = 'https://secure.gravatar.com/avatar'
-        else:
-            url = 'http://secure.gravatar.com/avatar'
-
-        hash = hashlib.md5(self.email.encode('utf-8')).hexdigest()
-        return "{url}/{hash}?s={size}&d={default}&r={rating}".format(url=url,hash=hash,size=size,default=default,rating=rating)
 
 
     def __repr__(self):
