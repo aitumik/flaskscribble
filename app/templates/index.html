@@ -1,52 +1,12 @@
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
-{% block title %} Flasky -Page Not Found {% endblock %}
+{% block title %} Flasky - Home Page {% endblock %}
 
 {% block page_content %}
 <div class="page-header">
-    <div class="row">
-        <div class="col-md-3">
-            <!-- <h1>Firs Row</h1> -->
-        </div>
-        <div id="main" class="col-md-6">
-            <div id="main-card" class="card">
-                <form action="" id="new-message">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="What is happening?">
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-camera" aria- hidden="true"></span>
-                        </span>
-                    </div>
-                </form>
-                <ul id="feed" class="list-unstyled">
-                    <li>
-                        <img src="{{url_for('static',filename='img/404.png')}}" class="feed-avatar img-circle">
-                        <div class="feed-post">
-                            <h5>Name <small>@namex - 3h</small></h5>
-                            <p> You can't hold a dog down without staying down with
-                                him!</p>
-                        </div>
-                        <div class="action-list">
-                            <a href="#">
-                                <span class="glyphicon glyphicon-share-alt" aria- hidden="true"></span>
-                            </a>
-                            <a href="#">
-                                <span class="glyphicon glyphicon-refresh " aria- hidden="true"></span>
-                                <span class="retweet-count">6</span>
-                            </a>
-                            <a href="#">
-                                <span class="glyphicon glyphicon-star" aria- hidden="true"></span>
-                            </a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <!-- <h1>Last row</h1> -->
-        </div>
+    <div class="container">
+        <h3>Posts</h3>
     </div>
-</div>
 <div>
     {% if current_user.can(Permission.WRITE_ARTICLES) %}
     {{ wtf.quick_form(form) }}

@@ -1,4 +1,4 @@
-<!-- {% extends "bootstrap/base.html" %} -->
+{% extends "bootstrap/base.html" %}
 
 {% block head %}
 {{ super() }}
@@ -8,9 +8,9 @@
 <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 <!-- <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}"> -->
 <!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
-
+<!-- 
 <link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap.css')}}">
-<link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
+<link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}"> -->
 {% endblock %}
 {% block title %}
 Flasky
@@ -21,8 +21,6 @@ Flasky
 
 <nav class="navbar navbar-dark bg-dark navbar-inverse navbar-fixed-top" role="navigation">
   <a href="/" class="navbar-brand">Flasky</a>
-  <button class="navbar-toggler">
-    <span class="navbar-toggler"></span>
   </button>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
