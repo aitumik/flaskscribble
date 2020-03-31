@@ -19,7 +19,7 @@
         </p>
         {% endif %}
     
-        {% if current_user.is_adiministrator %}
+        {% if current_user.is_administrator %}
         <p><a href="mailto:{{user.email }}">{{user.email}}</a></p>
         <a class="btn btn-danger" href="{{url_for('main.edit_profile',id=user.id) }}">Edit Profile [Admin]</a>
         {% endif %}
