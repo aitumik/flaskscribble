@@ -39,7 +39,7 @@ class Role(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True)
     default = db.Column(db.Boolean, default=False, index=True)
-    permissions = db.Column(db.Integer)
+    permissions = db.Column(db.ARRAY(db.Integer()))
 
     #users with the this role
     users = db.relationship('User', backref='roles', lazy='dynamic')
@@ -47,21 +47,21 @@ class Role(db.Model):
     def __init__(self,**kwargs):
         super(Role,self).__init__(**kwargs)
         if self.permissions is None:
-            self.permissions = 0
+            self.permissions = []
 
     def add_permission(self,perm):
         if not self.has_permission(perm):
-            self.permissions += perm
+            self.permissions.append(perm)
 
     def reset_permissions(self):
-        self.permissions = 0
+        self.permissions = []
 
     def remove_permission(self,perm):
         if self.has_permission(perm):
-            self.permissions -= perm
+            self.permissions.remove(perm)
 
     def has_permission(self,perm):
-        return self.permissions & perm == perm
+        return perm in self.permissions
 
 
     
@@ -176,6 +176,8 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         return True
 
+
+    """
     def generate_auth_token(self,expiration):
         s = Serializer(current_app.config['SECRET_KEY'],expires_in=expiration)
         return s.dumps({"id":self.id})
@@ -189,6 +191,7 @@ class User(UserMixin, db.Model):
             return None
         return User.query.get(data['id'])
 
+    """
     def can(self, perm):
         return self.role is not None and self.role.has_permission(perm)
 
