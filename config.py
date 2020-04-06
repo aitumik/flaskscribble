@@ -19,13 +19,14 @@ class Config:
 class DevelopmentConfig(Config):
 
     DEBUG = True
-    MAIL_SERVER = 'smtp.googlemail.com'
-    MAIL_PORT = 587
-    MAIL_USE_TLS = True
-    MAIL_PASSWORD = '@Helloworld254'
+    MAIL_SERVER = "localhost" #'smtp.googlemail.com'
+    MAIL_PORT = 8025 #587
+    #MAIL_USE_TLS = True
+    #MAIL_PASSWORD = '@Helloworld254'
     MAIL_USERNAME = 'nathanpykimutai@gmail.com'
     SQLALCHEMY_DATABASE_URI = "sqlite:////" + os.path.join(base_dir,'data-dev.sqlite')
     SQLALCHEMY_TRACK_MODIFICATIONS = True
+    #SQLALCHEMY_ECHO = True
 
 class TestingConfig(Config):
 
