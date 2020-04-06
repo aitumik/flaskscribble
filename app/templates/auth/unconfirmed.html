@@ -3,10 +3,10 @@
 
 {% block page_content %}
 <div class="page-header">
-    <h1>Hello</h1>
+    <h1>Hello {{ current_user.email }}</h1>
     <h3>You have not confirmed your account yet.</h3>
     <p>Before you can acess this site you need to confirm your account. Check your inbox you should have recieved and email with confirmation link</p>
-    <p>Need another confirmation email? <a href="/">Click here</a></p>
+    <p>Need another confirmation email? <a href="{{url_for('auth.resend_confirmation')}}">Click here</a></p>
 </div>
 
 {% endblock %}
