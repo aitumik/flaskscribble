@@ -39,29 +39,29 @@ class Role(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True)
     default = db.Column(db.Boolean, default=False, index=True)
-    permissions = db.Column(db.ARRAY(db.Integer()))
+    permissions = db.Column(db.Integer)
 
     #users with the this role
-    users = db.relationship('User', backref='roles', lazy='dynamic')
+    users = db.relationship('User', backref='role', lazy='dynamic')
 
     def __init__(self,**kwargs):
         super(Role,self).__init__(**kwargs)
         if self.permissions is None:
-            self.permissions = []
+            self.permissions = 0
 
     def add_permission(self,perm):
         if not self.has_permission(perm):
-            self.permissions.append(perm)
+            self.permissions += perm
 
     def reset_permissions(self):
-        self.permissions = []
+        self.permissions = 0
 
     def remove_permission(self,perm):
         if self.has_permission(perm):
-            self.permissions.remove(perm)
+            self.permissions -= perm
 
     def has_permission(self,perm):
-        return perm in self.permissions
+        return self.permissions & int(perm) == int(perm) 
 
 
     
@@ -115,7 +115,7 @@ class User(UserMixin, db.Model):
     last_seen = db.Column(db.DateTime(),default=datetime.utcnow)
     avatar_hash = db.Column(db.String(32))
     posts = db.relationship('Post',backref='author',lazy='dynamic')
-    role = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -148,6 +148,7 @@ class User(UserMixin, db.Model):
             try:
                 db.session.commit()
             except Exception as e:
+                print(e)
                 db.session.rollback()
     @property
     def password(self):
