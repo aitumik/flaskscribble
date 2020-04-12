@@ -1,4 +1,4 @@
-from flask import render_template,session,redirect,url_for,abort,flash
+from flask import render_template,session,redirect,url_for,abort,flash,request
 from flask_login import login_required
 from . import main
 from flask_login import current_user
@@ -11,17 +11,17 @@ from ..decorators import admin_required,permission_required
 @main.route("/",methods=['GET','POST'])
 def home():
     form = PostForm()
-    if form.validate_on_submit() and current_user.can(Permission.WRITE_ARTICLES):
-        post = Post(body = form.post.data,author=current_user._get_current_object())
+    if form.validate_on_submit() and current_user.can(Permission.WRITE):
+        post = Post(body = form.body.data,author=current_user._get_current_object())
         db.session.add(post)
         return redirect(url_for(".home"))
     
     # adding the pagination here
-    #page = request.args.get('page',1,type=int)
-    #pagination = Post.query.order_by(Post.timestapm.desc()).paginate(page,per_page=7,error_out = False)
-    #posts = pagination.items()
-    #posts = Post.query.order_by(Post.timestamp.desc()).all()
-    return render_template("index.html",form=form)
+    page = request.args.get('page',1,type=int)
+    pagination = Post.query.order_by(Post.timestamp.desc()).paginate(page,per_page=3,error_out = False)
+    posts = pagination.items
+    # posts = Post.query.order_by(Post.timestamp.desc()).all()
+    return render_template('index.html', form=form, posts=posts,pagination=pagination)
 
 @main.route("/edit-profile",methods=["GET","POST"])
 @login_required
