@@ -1,5 +1,7 @@
 from app import db
 import hashlib
+import bleach
+from markdown import markdown
 from flask import request
 from datetime import datetime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
@@ -27,6 +29,13 @@ def load_user(user_id):
     user = load_user(1)
     """
     return User.query.get(int(user_id))
+
+class Follow(db.Model):
+
+    __tablename__ = 'follows'
+    follower_id = db.Column(db.Integer,db.ForeignKey('users.id'),primary_key = True)
+    followed_id = db.Column(db.Integer,db.ForeignKey('users.id'),primary_key = True)
+    timestamp = db.Column(db.DateTime,default = datetime.utcnow)
 
 
 class Role(db.Model):
@@ -117,6 +126,20 @@ class User(UserMixin, db.Model):
     posts = db.relationship('Post',backref='author',lazy='dynamic')
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
 
+    #followers and followed
+
+    followed = db.relationship('Follow',
+        foreign_keys = [Follow.follower_id],
+        backref=db.backref('follower', lazy='joined'),
+        lazy='dynamic',
+        cascade='all, delete-orphan')
+
+    followers = db.relationship('Follow',
+        foreign_keys=[Follow.followed_id],
+        backref=db.backref('followed', lazy='joined'),
+        lazy='dynamic',
+        cascade='all, delete-orphan')
+
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
         if self.role is None:
@@ -177,6 +200,23 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         return True
 
+    def follow(self,user):
+        if not self.is_following(user):
+            f = Follow(follower=self,followed=user)
+            db.session.add(f)
+
+    def unfollow(self,user):
+        f = self.followed.filter_by(followed_id=user.id).first()
+        if f:
+            db.session.delete(f)
+    
+    def is_following(self,user):
+        return self.followed.filter_by(followed_id=user.id).first() is not None
+
+    def is_followed_by(self,user):
+        return self.followers.filter_by(follower_id=user.id).first() is not None
+
+
 
     """
     def generate_auth_token(self,expiration):
@@ -234,11 +274,20 @@ class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer,primary_key = True)
     body = db.Column(db.Text)
+    body_html = db.Column(db.Text)
     timestamp = db.Column(db.DateTime,index=True,default = datetime.utcnow)
     author_id = db.Column(db.Integer,db.ForeignKey("users.id"))
 
     def to_json(self):
         pass
+
+    @staticmethod
+    def on_changed_body(target,value,oldvalue,initiator):
+        allowed_tags = ['a','abbr', 'acronym', 'b', 'blockquote', 'code',
+'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul',
+'h1', 'h2', 'h3', 'p']
+        target.body_html = bleach.linkify(bleach.clean(markdown(value,output_format="html"),tags=allowed_tags,strip=True))
+
     
 
     @staticmethod
@@ -256,10 +305,6 @@ class Post(db.Model):
             db.session.add(p)
             db.session.commit()
 
-class Follow(db.Model):
-    __tablename__ = 'follows'
-    follower_id = db.Column(db.Integer,db.ForeignKey('users.id'),primary_key = True)
-    followed_id = db.Column(db.Integer,db.ForeignKey('users.id'),primary_key = True)
-    timestamp = db.Column(db.DateTime,default = datetime.utcnow)
+db.event.listen(Post.body,'set',Post.on_changed_body)
 
 login_manager.anonymous_user = AnonymousUser

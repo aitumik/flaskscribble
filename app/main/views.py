@@ -23,6 +23,26 @@ def home():
     # posts = Post.query.order_by(Post.timestamp.desc()).all()
     return render_template('index.html', form=form, posts=posts,pagination=pagination)
 
+@main.route("/post/<int:id>")
+def post(id):
+    post = Post.query.get_or_404(id)
+    return render_template("post.html",posts=[post])
+
+@main.route("/edit/<int:id>",methods=['GET','POST'])
+@login_required
+def edit(id):
+    post = Post.query.get_or_404(id)
+    if current_user != post.author and not current_user.can(Permission.ADMIN):
+        abort(403)
+    form = PostForm()
+    if form.validate_on_submit():
+        post.body = form.body.data
+        db.session.add(post)
+        flash("The post has been updated")
+        return redirect(url_for('main.post',id=post.id))
+    form.body.data = post.body
+    return render_template("edit_post.html",form=form)
+
 @main.route("/edit-profile",methods=["GET","POST"])
 @login_required
 def edit_profile():
@@ -78,6 +98,32 @@ def user(username):
     posts = user.posts.order_by(Post.timestamp.desc()).all()
     return render_template("user.html",user=user,posts = posts)
 
+@main.route("/follow/<username>")
+@login_required
+def follow(username):
+    user = User.query.filter_by(usernaname=username).first()
+    if user is None:
+        flash("Inavalid user")
+        return redirect(url_for("main.home"))
+    if current_user.is_following(user):
+        flash("You are already following this user")
+        return redirect(url_for('.user', username=username))
+    current_user.follow(user)
+    flash("You are now following {}".format(username))
+    return redirect(url_for("main.user",username=username))
+
+@main.route("/followers/<username>")
+@login_required
+def followers(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        flash("Invalid user")
+        return redirect(url_for("main.home"))
+    page = request.args.get('page', 1, type=int)
+    pagination = user.followers.pagingate(
+            page,per_page=10,error_out=False)
+    follows = [{"user":item.follower,'timestamp':item.timestamp} for item in pagination.items]
+    return render_template('followers.html', user=user, title="Followers of",endpoint='.followers', pagination=pagination,follows=follows)
 
 
 @main.route("/admin")
@@ -85,5 +131,3 @@ def user(username):
 @admin_required
 def for_admins_only():
     return  "For administrators"
-
-
