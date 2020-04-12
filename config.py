@@ -11,6 +11,7 @@ class Config:
     BLOGGING_MAIL_SENDER ='nathanpykimutai@gmail.com' #os.environ.get('MAIL_USERNAME')
     BLOGGING_ADMIN =  'nathanpykimutai@gmail.com'
     BLOGGING_MAIL_SUBJECT_PREFIX = "[Blogging]"
+    BLOGGING_POSTS_PER_PAGE = 10
 
     @staticmethod
     def init_app(app):
