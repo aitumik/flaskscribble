@@ -101,7 +101,7 @@ def user(username):
 @main.route("/follow/<username>")
 @login_required
 def follow(username):
-    user = User.query.filter_by(usernaname=username).first()
+    user = User.query.filter_by(username=username).first()
     if user is None:
         flash("Inavalid user")
         return redirect(url_for("main.home"))
@@ -120,11 +120,42 @@ def followers(username):
         flash("Invalid user")
         return redirect(url_for("main.home"))
     page = request.args.get('page', 1, type=int)
-    pagination = user.followers.pagingate(
+    pagination = user.followers.paginate(
             page,per_page=10,error_out=False)
     follows = [{"user":item.follower,'timestamp':item.timestamp} for item in pagination.items]
     return render_template('followers.html', user=user, title="Followers of",endpoint='.followers', pagination=pagination,follows=follows)
 
+@main.route('/followed_by/<username>')
+def followed_by(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        flash('Invalid user.')
+        return redirect(url_for('.home'))
+    page = request.args.get('page', 1, type=int)
+    pagination = user.followed.paginate(
+        page, per_page=10,
+        error_out=False)
+    follows = [{'user': item.followed, 'timestamp': item.timestamp}
+               for item in pagination.items]
+    return render_template('followers.html', user=user, title="Followed by",
+                           endpoint='.followed_by', pagination=pagination,
+                           follows=follows)
+
+@main.route('/unfollow/<username>')
+@login_required
+@permission_required(Permission.FOLLOW)
+def unfollow(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        flash('Invalid user.')
+        return redirect(url_for('.home'))
+    if not current_user.is_following(user):
+        flash('You are not following this user.')
+        return redirect(url_for('.user', username=username))
+    current_user.unfollow(user)
+    db.session.commit()
+    flash('You are not following %s anymore.' % username)
+    return redirect(url_for('.user', username=username))
 
 @main.route("/admin")
 @login_required
