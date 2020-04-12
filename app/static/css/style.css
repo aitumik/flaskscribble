@@ -1,0 +1,14 @@
+#navibar {
+    border-radius: 0;
+    text-transform: uppercase;
+    color: white;
+}
+
+footer {
+    background-color: #222222;
+    color: white;
+    height: 100px;
+    vertical-align: bottom;
+    margin-bottom: 0;
+}
+
