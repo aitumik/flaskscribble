@@ -124,6 +124,7 @@ class User(UserMixin, db.Model):
     last_seen = db.Column(db.DateTime(),default=datetime.utcnow)
     avatar_hash = db.Column(db.String(32))
     posts = db.relationship('Post',backref='author',lazy='dynamic')
+    comments = db.relationship('Comment', backref='author', lazy='dynamic')
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
 
     #followers and followed
@@ -149,6 +150,16 @@ class User(UserMixin, db.Model):
                 self.role = Role.query.filter_by(default=True).first()
         if self.email is not None and self.avatar_hash is None:
             self.avatar_hash = hashlib.md5(self.email.encode('utf-8')).hexdigest()
+        #follow himuselfu
+        self.follow(self)
+
+    @staticmethod
+    def add_self_follows():
+        for user in User.query.all():
+            if not user.is_following(user):
+                user.follow(user)
+                db.session.add(user)
+                db.session.commit()
     
     @staticmethod
     def generate_fake(count=100):
@@ -271,12 +282,15 @@ class AnonymousUser(AnonymousUserMixin):
         return False
 
 class Post(db.Model):
+
     __tablename__ = 'posts'
+
     id = db.Column(db.Integer,primary_key = True)
     body = db.Column(db.Text)
     body_html = db.Column(db.Text)
     timestamp = db.Column(db.DateTime,index=True,default = datetime.utcnow)
     author_id = db.Column(db.Integer,db.ForeignKey("users.id"))
+    comments = db.relationship('Comment',backref='post',lazy='dynamic')
 
     def to_json(self):
         pass
@@ -307,4 +321,22 @@ class Post(db.Model):
 
 db.event.listen(Post.body,'set',Post.on_changed_body)
 
+class Comment(db.Model):
+
+    __tablename__ = "comments"
+
+    id = db.Column(db.Integer,primary_key=True)
+    body = db.Column(db.Text)
+    body_html = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    disabled = db.Column(db.Boolean)
+    author_id = db.Column(db.Integer,db.ForeignKey('users.id'))
+    post_id = db.Column(db.Integer,db.ForeignKey('posts.id'))
+
+    @staticmethod
+    def on_changed_body(target,value,oldvalue,initiator):
+        allowed_tags = ['a', 'abbr', 'acronym', 'b', 'code', 'em', 'i','strong']
+        target.body_html = bleach.linkify(bleach.clean(markdown(value,output_format='html'),tags=allowed_tags,strip=True))
+
+db.event.listen(Comment.body,'set',Comment.on_changed_body)
 login_manager.anonymous_user = AnonymousUser
