@@ -20,7 +20,7 @@ def home():
     # adding the pagination here
     page = request.args.get('page', 1, type=int)
     pagination = Post.query.order_by(Post.timestamp.desc()).paginate(
-        page, per_page=3, error_out=False)
+        page, per_page=10, error_out=False)
     posts = pagination.items
     # posts = Post.query.order_by(Post.timestamp.desc()).all()
     return render_template('index.html', form=form, posts=posts, pagination=pagination)
@@ -57,7 +57,7 @@ def post(id):
         page = (post.comments.count() - 1) / \
             current_app.config['FLASKY_COMMENTS_PER_PAGE'] + 1
     pagination = post.comments.order_by(Comment.timestamp.asc()).paginate(
-        page, per_page=4,
+        page, per_page=10,
         error_out=False)
     comments = pagination.items
     return render_template("post.html", posts=[post], form=form, comments=comments, pagination=pagination)

@@ -1,3 +1,7 @@
+htm,body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
 #mainNav {
     border-radius: 0;
 }
@@ -152,5 +156,41 @@ ul#feed .action-list .retweet-count {
 
 ul#feed a {
     text-decoration: none;
+}
+
+#footer {
+    background-color: #222;
+    margin-top: 20px;
+    margin-bottom: 0;
+    width: 100%;
+    margin-right: 0;
+    vertical-align: bottom;
+    margin-right: 0;
+}
+
+#footer a {
+    color: #fff;
+    text-transform: uppercase;
+    list-style: none;
+    text-decoration: none;
+    display: block;
+
+}
+
+#footer a:hover {
+    background-color: #3333;
+}
+
+#footer .row {
+    padding: 44px;
+}
+
+#mainpage {
+    margin-top: 50px;
+}
+
+#profile {
+    margin-left: -20px;
+    margin-right: 10px;
 }
 

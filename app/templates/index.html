@@ -38,22 +38,28 @@
             </div>
         </div>
         <div id="main" class="col-sm-12 col-md-6">
+            {% if current_user.can(Permission.WRITE) %}
             <div class="card" id="main-card">
-                {% if current_user.can(Permission.WRITE) %}
                 <form method="POST" action="" id="new-post">
                     <div class="input-group">
                         {{form.body(class='form-control')}}
                         <span class="input-group-addon">
-                            <input type="submit" class="glyphicon glyphicon-camera">
-                        </span>
+                            <span class="glyphicon glyphicon-camera" aria-hidden="true">
+                            </span>
                     </div>
                 </form>
-                {% endif %}
             </div>
+            {% else %}
+            <div class="alert alert-warning" role="alert">
+                You need to be logged in to post content
+            </div>
+            {% endif %}
             {% include '_posts.html' %}
-            <div style="text-align: center;">
-                {{ macros.pagination_widget(pagination, '.home') }}
-                {% endblock %}
+            <div class="container">
+                <div style="text-align: center;">
+                    {{ macros.pagination_widget(pagination, '.home') }}
+                    {% endblock %}
+                </div>
             </div>
         </div>
         <div id="right-content" class="col-md-3 hidden-sm hidden-xs"></div>
