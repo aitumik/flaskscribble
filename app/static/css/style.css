@@ -1,14 +1,19 @@
-#navibar {
-    border-radius: 0;
+.navigation ul {
+    font: bold 11px "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
     text-transform: uppercase;
-    color: white;
 }
 
-footer {
-    background-color: #222222;
-    color: white;
-    height: 100px;
-    vertical-align: bottom;
-    margin-bottom: 0;
+.navigation li {
+    display: inline-block;
 }
 
+.navigation a {
+    background: #395870;
+    background: linear-gradient(#49708f, #293f50);
+    border-right: 1px solid rgba(0, 0, 0, .3);
+    color: #fff;
+    padding: 12px 20px;
+    text-decoration: none;
+}

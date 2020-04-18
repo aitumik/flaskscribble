@@ -31,6 +31,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{url_for('main.user',username=current_user.username)}}">Profile</a>
                     </li>
+                    {% if current_user.can(Permission.MODERATE) %}
+                        <li><a href="{{ url_for('main.moderate') }}">Moderate Comments</a></li>
+                    {% endif %}
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Sign Out</a></li>
                     {% else %}
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Sign In</a></li>
@@ -59,10 +62,8 @@
     <footer>
 
     </footer>
-
-    <script>
-        {{ moment.include_moment() }}
-    </script>
+    {% block script %}
+    {% endblock script %}
 
 </body>
 

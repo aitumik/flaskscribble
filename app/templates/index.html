@@ -16,3 +16,8 @@
 {% include '_posts.html' %}
     {{ macros.pagination_widget(pagination, '.home') }}
 {% endblock %}
+
+{% block script %}
+{{moment.include_moment()}}
+{{pagedown.include_pagedown() }}
+{% endblock script %}
