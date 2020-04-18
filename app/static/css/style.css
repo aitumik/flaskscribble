@@ -1,19 +1,156 @@
-.navigation ul {
-    font: bold 11px "Helvetica Neue", Helvetica, Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    text-transform: uppercase;
+#mainNav {
+    border-radius: 0;
 }
 
-.navigation li {
+#nav-options {
+    margin: 0.5em;
+}
+
+#nav-options button.thumbnail {
+    margin: 0;
+    padding: 0;
+}
+
+#nav-options img {
+    max-height: 2.3em;
+    border-radius: 0.3em;
+}
+
+body {
+    padding-top: 43m;
+    background-color: #F5F8FA;
+}
+
+.card {
+    position: relative;
+    border: 0.1rem solid #e5e5e5;
+    border-radius: 0.4rem;
+    position: relative;
+    background-color: #fff;
+}
+
+.card-img-top {
+    border-radius: 0.4rem 0.4rem 0 0 ; 
+}
+
+.car-block {
+    padding: 1.25rem;
+}
+
+.card-block {
+    padding-left: 15px;
+}
+
+.card-block img.card-img {
+    top: 70%;
+    margin-top: -20px;
+    width: 100px;
+    border: 3px solid #fff;
+    border-radius: 0.4rem;
+    float: left;
+    position: relative;
+    z-index: 99;
+}
+
+.card-block .card-title {
+    float: left;
+    margin: 0;
+    margin-left: 0.5em;
+}
+
+.card-block .card-title small {
+    display: block;
+}
+
+.card-block .card-text {
+    clear: both;
+    padding-top: 0.25em;
+    margin-bottom: 1.5em;
+}
+
+.card-block ul a:hover {
+    text-decoration: none;
+}
+
+.card-block ul .profile-stats {
+    color: #777;
+    display: block;
+    text-transform: uppercase;
+    font-size: 0.63em;
+}
+
+.card-block ul .profile-value {
+    color: #000;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #2F92CA;
+}
+
+form#new-post {
+    border-radius: 0.4rem 0.4rem 0 0;
+    padding: 1em;
+    border-bottom: 0.1em solid #CEE4F5;
+    background-color: #EBF4FB;
+}
+
+form#new-message .input-group-addon {
+    background-color: #FFF;
+}
+
+ul#feed {
+    margin: 0;
+}
+
+ul#feed li {
+    padding:1em 1em;
+    border-bottom: 0.1rem solid #e5e5e5;
+}
+
+ul#feed li:last-child {
+    border-bottom: none;
+}
+
+ul#feed .feed-avatar {
+    width: 13%;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+ul#feed .feed-post {
+    width: 80%;
+    display: inline-block;
+    margin-left: 2%;
+}
+
+ul#feed .feed-post h5 {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+ul#feed .feed-post h5 > small {
+    font-size: 1.2rem;
+}
+
+ul#feed .action-list {
+    margin-left: 13%;
+    padding-left: 1em;
+}
+
+ul#feed .action-list a {
+    width: 15%;
     display: inline-block;
 }
 
-.navigation a {
-    background: #395870;
-    background: linear-gradient(#49708f, #293f50);
-    border-right: 1px solid rgba(0, 0, 0, .3);
-    color: #fff;
-    padding: 12px 20px;
+ul#feed .action-list a:hover {
     text-decoration: none;
 }
+
+ul#feed .action-list .retweet-count {
+    padding-left: 0.2em;
+    font-weight: bold;
+}
+
+ul#feed a {
+    text-decoration: none;
+}
+
