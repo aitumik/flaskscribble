@@ -20,7 +20,7 @@ class Config:
 class DevelopmentConfig(Config):
 
     DEBUG = True
-    MAIL_SERVER = 'smtp.googlemail.com'
+    MAIL_SERVER = 'smtp.sendgrid.net'
     MAIL_PORT = 587
     #MAIL_USE_SSL = True
     MAIL_USE_TLS = True
@@ -34,6 +34,7 @@ class TestingConfig(Config):
 
     TESTING = True
     SQLALCHEMY_DATABASE_URI = "sqlite:////" + os.path.join(base_dir,'data-test.sqlite')
+    #SQLALCHEMY_DATABASE_URI = "mysql+pymysql://cbuser:cbpass@localhost:3306/cookbook"
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 

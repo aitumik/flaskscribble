@@ -160,29 +160,42 @@ ul#feed a {
 
 #footer {
     background-color: #222;
-    margin-top: 20px;
+    margin-top: 40px;
+    margin-bottom: 0;
     margin-bottom: 0;
     width: 100%;
     margin-right: 0;
     vertical-align: bottom;
     margin-right: 0;
+    color: white;
 }
+
+#footer ul {
+    list-style: none;
+}
+
+#footer li {
+    margin-left: 0;
+    padding-top: 10px;
+    margin-left: -40px;
+}
+
+#footer h4 {
+    font-weight: 600;
+}
+
 
 #footer a {
     color: #fff;
-    text-transform: uppercase;
     list-style: none;
     text-decoration: none;
     display: block;
+    margin-left: 0;
 
-}
-
-#footer a:hover {
-    background-color: #3333;
 }
 
 #footer .row {
-    padding: 44px;
+    padding: 10px;
 }
 
 #mainpage {
@@ -194,3 +207,10 @@ ul#feed a {
     margin-right: 10px;
 }
 
+#footer .col-md-4 {
+    margin-bottom: 0;
+}
+
+#footer .bottom {
+    text-align: left;
+}

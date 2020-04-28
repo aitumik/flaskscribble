@@ -51,7 +51,11 @@
         </a>
         <div class="feed-post">
             <h5>{{post.author.name}} <small>@{{post.author.username }} -{{post.timestamp}}</small></h5>
-            <p>{{post.body}}</p>
+            {% if post.body_html %}
+                {{post.body_html | safe }}
+            {% else %}
+                <p>{{post.body}}</p>
+            {% endif %}
         </div>
 
         <div class="action-list">
