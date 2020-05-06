@@ -35,3 +35,4 @@ def before_request():
 @api.route("/")
 def index():
     return jsonify({"message":"hello"})
+

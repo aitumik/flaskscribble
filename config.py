@@ -12,6 +12,7 @@ class Config:
     BLOGGING_ADMIN =  'nathanpykimutai@gmail.com'
     BLOGGING_MAIL_SUBJECT_PREFIX = "[Blogging]"
     BLOGGING_POSTS_PER_PAGE = 10
+    BLOGGING_COMMENTS_PER_PAGE = 10
 
     @staticmethod
     def init_app(app):

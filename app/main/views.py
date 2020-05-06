@@ -2,6 +2,7 @@ from flask import render_template, session, redirect, url_for, abort, flash, req
 from flask_login import login_required
 from . import main
 from flask_login import current_user
+from flask import current_app
 from .forms import NameForm, EditProfileForm, PostForm, CommentForm
 from ..import db
 from ..models import User, Permission, Post, Comment
@@ -42,7 +43,7 @@ def show_followed():
     return resp
 
 
-@main.route("/post/<int:id>")
+@main.route("/post/<int:id>",methods=['GET','POST'])
 def post(id):
     form = CommentForm()
     post = Post.query.get_or_404(id)
@@ -55,7 +56,7 @@ def post(id):
     page = request.args.get('page', 1, type=int)
     if page == -1:
         page = (post.comments.count() - 1) / \
-            current_app.config['FLASKY_COMMENTS_PER_PAGE'] + 1
+            current_app.config['BLOGGING_COMMENTS_PER_PAGE'] + 1
     pagination = post.comments.order_by(Comment.timestamp.asc()).paginate(
         page, per_page=10,
         error_out=False)

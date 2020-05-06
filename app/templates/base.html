@@ -50,11 +50,12 @@
                         <button type="button" class="btn btn-default dropdown-toggle thumbnail"
                             data-toggle="dropdown-menu" aria-haspopup="true" aria-expanded="false">
                             <img src="{{ current_user.gravatar(256) }}" alt="">
+                            <!-- <span class="caret"></span> -->
                         </button>
                         <ul class="dropdown-menu">
                             <li><a href="#">Profile</a></li>
                             <li><a href="#">Setting</a></li>
-                            <li class="dividor" role="separator"></li>
+                            <li class="divider" role="separator"></li>
                             <li><a href="{{url_for('auth.logout')}}">Logout</a></li>
                         </ul>
                     </div>

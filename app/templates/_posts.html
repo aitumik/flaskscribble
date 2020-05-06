@@ -72,9 +72,15 @@
             </a>
             <a href="#comments">
                 <span class="glyphicon glyphicon-comment"></span>
-                <span class="comment-count">{{post.comments.count()}}</span>
+                <span class="comment-count">{{ post.comments.count() }}</span>
             </a>
+            {% if current_user.is_administrator() %}
+                <a href="{{ url_for('.edit', id=post.id) }}">
+                  <span class="btn btn-danger btn-xs">Edit [Admin]</span>
+                </a>
+            {% endif %}
         </div>
+        {{wtf.quick_form(form) }}
     </li>
     {% endfor %}
 </ul>

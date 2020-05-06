@@ -49,7 +49,7 @@ class PostForm(FlaskForm):
     submit = SubmitField("Submit")
 
 class CommentForm(FlaskForm):
-    body = StringField('', validators=[Required()])
+    body = StringField('Enter your comment', validators=[Required()])
     submit = SubmitField('Submit')
 
 
