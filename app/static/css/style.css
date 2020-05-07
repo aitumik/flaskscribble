@@ -98,7 +98,9 @@ form#new-post {
 }
 
 form#new-message .input-group-addon {
-    background-color: #FFF;
+    border: none;
+    margin: 0;
+    padding: 0;
 }
 
 ul#feed {
@@ -228,3 +230,7 @@ ul#feed a {
         text-align: center;
     }
 }
+
+
+
+ 
