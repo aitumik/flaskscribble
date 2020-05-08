@@ -207,6 +207,9 @@ ul#feed a {
 #profile {
     margin-left: -20px;
     margin-right: 10px;
+    margin-top: 40px;
+    padding-right: 100px;
+    padding-left: 10px;
 }
 
 #footer .col-md-4 {
