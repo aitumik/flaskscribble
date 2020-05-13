@@ -1,4 +1,5 @@
 from flask import g,jsonify
+from . import api
 from flask_httpauth import HTTPBasicAuth
 
 from ..models import User

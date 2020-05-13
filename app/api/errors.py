@@ -1,4 +1,6 @@
 from flask import jsonify
+from app.exceptions import ValidationError
+from . import api
 
 @api.errorhandler(ValidationError)
 def validation_error(e):
