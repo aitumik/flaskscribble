@@ -21,7 +21,7 @@ class Config:
 class DevelopmentConfig(Config):
 
     DEBUG = True
-    MAIL_SERVER = 'smtp.sendgrid.net'
+    MAIL_SERVER = 'smtp.google.com'
     MAIL_PORT = 587
     #MAIL_USE_SSL = True
     MAIL_USE_TLS = True

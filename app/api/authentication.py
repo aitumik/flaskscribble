@@ -21,11 +21,6 @@ def verify_password(email,password):
 def auth_error():
     return unauthorized("Invalid credentials")
 
-# @api.route('/posts')
-# @auth.login_required
-# def get_posts():
-#     pass
-
 @api.before_request
 @auth.login_required
 def before_request():
@@ -35,4 +30,11 @@ def before_request():
 @api.route("/")
 def index():
     return jsonify({"message":"hello"})
+
+@api.route("/tokens/",methods=["POST"])
+def get_token():
+    if g.current_user.is_anonymous or g.token_used:
+        return unauthorized("Invalid credentials")
+    return jsonify({"token":
+        g.current_user.generate_auth_token(expiration=3600),"expiration":3600})
 
