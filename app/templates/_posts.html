@@ -46,7 +46,7 @@
 <ul id="feed" class="list-unstyled">
     {% for post in posts %}
     <li>
-        <a href="{{url_for('.user',username=post.author.username)}}">
+        <a href="{{ url_for('.user', username=post.author.username) }}">
             <img src="{{ post.author.gravatar(256) }}" class="feed-avatar img-circle" alt="user image">
         </a>
         <div class="feed-post">

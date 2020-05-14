@@ -7,7 +7,18 @@
 <div class="container">
     <div class="row">
         <div id="profile" class="col-md-3 hidden-sm hidden-xs">
-            <h3>What is trending</h3>
+            {% if current_user.can(Permission.WRITE) %}
+            <div class="card" id="main-card">
+                <form method="POST" action="" id="new-post">
+                    <div class="input-group">
+                        {{form.body(class='form-control',id='post-form')}}
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-camera" aria-hidden="true"></span>
+                    </div>
+                </form>
+            </div>
+            {% endif %}
+            <h3>Post something??</h3>
             <form>
                 <div class="form-group">
                     <input type="text" placeholder="What is going on" class="form-control">
@@ -19,17 +30,6 @@
         </div>
         <div id="main" class="col-sm-12 col-md-6">
             <div class="container-fluid">
-                {% if current_user.can(Permission.WRITE) %}
-                <div class="card" id="main-card">
-                    <form method="POST" action="" id="new-post">
-                        <div class="input-group">
-                            {{form.body(class='form-control',id='post-form')}}
-                            <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-camera" aria-hidden="true"></span>
-                        </div>
-                    </form>
-                </div>
-                {% endif %}
                 {% include '_posts.html' %}
                 <div>
                     <div style="text-align: center;">
