@@ -1,4 +1,4 @@
-from flask_wtf import FlaskForm
+from flask_wtf import Form as FlaskForm
 from flask_pagedown.fields import PageDownField
 from wtforms import StringField,SubmitField,TextAreaField,BooleanField,SelectField
 from wtforms.validators import Required,Length,Email,Regexp
