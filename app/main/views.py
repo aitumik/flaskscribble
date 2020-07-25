@@ -26,7 +26,6 @@ def home():
     # posts = Post.query.order_by(Post.timestamp.desc()).all()
     return render_template('index.html', form=form, posts=posts, pagination=pagination)
 
-
 @main.route("/all")
 @login_required
 def show_all():
