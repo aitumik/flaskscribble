@@ -46,12 +46,16 @@
 <ul id="feed" class="list-unstyled">
     {% for post in posts %}
     <li>
-        <a href="{{url_for('.user',username=post.author.username)}}">
+        <a href="{{ url_for('.user', username=post.author.username) }}">
             <img src="{{ post.author.gravatar(256) }}" class="feed-avatar img-circle" alt="user image">
         </a>
         <div class="feed-post">
             <h5>{{post.author.name}} <small>@{{post.author.username }} -{{post.timestamp}}</small></h5>
-            <p>{{post.body}}</p>
+            {% if post.body_html %}
+                {{post.body_html | safe }}
+            {% else %}
+                <p>{{post.body}}</p>
+            {% endif %}
         </div>
 
         <div class="action-list">
@@ -68,8 +72,13 @@
             </a>
             <a href="#comments">
                 <span class="glyphicon glyphicon-comment"></span>
-                <span class="comment-count">{{post.comments.count()}}</span>
+                <span class="comment-count">{{ post.comments.count() }}</span>
             </a>
+            {% if current_user.is_administrator() %}
+                <a href="{{ url_for('.edit', id=post.id) }}">
+                  <span class="btn btn-danger btn-xs">Edit [Admin]</span>
+                </a>
+            {% endif %}
         </div>
     </li>
     {% endfor %}

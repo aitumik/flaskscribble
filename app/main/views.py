@@ -2,6 +2,7 @@ from flask import render_template, session, redirect, url_for, abort, flash, req
 from flask_login import login_required
 from . import main
 from flask_login import current_user
+from flask import current_app
 from .forms import NameForm, EditProfileForm, PostForm, CommentForm
 from ..import db
 from ..models import User, Permission, Post, Comment
@@ -25,7 +26,6 @@ def home():
     # posts = Post.query.order_by(Post.timestamp.desc()).all()
     return render_template('index.html', form=form, posts=posts, pagination=pagination)
 
-
 @main.route("/all")
 @login_required
 def show_all():
@@ -42,7 +42,7 @@ def show_followed():
     return resp
 
 
-@main.route("/post/<int:id>")
+@main.route("/post/<int:id>",methods=['GET','POST'])
 def post(id):
     form = CommentForm()
     post = Post.query.get_or_404(id)
@@ -55,7 +55,7 @@ def post(id):
     page = request.args.get('page', 1, type=int)
     if page == -1:
         page = (post.comments.count() - 1) / \
-            current_app.config['FLASKY_COMMENTS_PER_PAGE'] + 1
+            current_app.config['BLOGGING_COMMENTS_PER_PAGE'] + 1
     pagination = post.comments.order_by(Comment.timestamp.asc()).paginate(
         page, per_page=10,
         error_out=False)
@@ -210,11 +210,13 @@ def moderate():
 @main.route("/moderate/enable/<int:id>")
 @login_required
 @permission_required(Permission.MODERATE)
-def moderate_enable(id):
-    comment = Comment.query.get_or_404(id)
-    comment.disabled = False
-    db.session.add(comment)
-    return redirect(url_for('.moderate/disable',page=request.args.get('page', 1, type=int)))
+#def moderate_enable(id):
+def moderator():
+    #jcomment = Comment.query.get_or_404(id)
+    #comment.disabled = False
+    #db.session.add(comment)
+    #return redirect(url_for('.moderate_disable',page=request.args.get('page', 1, type=int)))
+    return "You have disable"
 
 @main.route("/moderate/disable/<int:id>")
 @login_required
@@ -223,7 +225,7 @@ def moderate_disable(id):
     comment = Comment.query.get_or_404(id)
     comment.disabled = True
     db.session.add(comment)
-    return redirect(url_for('.moderate/enable',page=request.args.get('page', 1, type=int)))
+    return redirect(url_for('main.moderator'))
 
 
 @main.route("/admin")

@@ -1,3 +1,5 @@
+from app.exceptions import ValidationError
+from flask import url_for
 from app import db
 import hashlib
 import bleach
@@ -165,18 +167,18 @@ class User(UserMixin, db.Model):
     def generate_fake(count=100):
         from sqlalchemy.exc import IntegrityError
         from random import seed
-        import forgery_py
+        import forgery
 
         seed()
         for i in range(count):
-            u = User(email=forgery_py.internet.email_address(),
-                    username=forgery_py.internet.user_name(True),
-                    password=forgery_py.lorem_ipsum.word(),
+            u = User(email=forgery.internet.email_address(),
+                    username=forgery.internet.user_name(True),
+                    password=forgery.lorem_ipsum.word(),
                     confirmed=True,
-                    name=forgery_py.name.full_name(),
-                    location=forgery_py.address.city(),
-                    about_me = forgery_py.lorem_ipsum.sentence(),
-                    member_since = forgery_py.date.date(True))
+                    name=forgery.name.full_name(),
+                    location=forgery.address.city(),
+                    about_me = forgery.lorem_ipsum.sentence(),
+                    member_since = forgery.date.date())
             db.session.add(u)
 
             try:
@@ -227,9 +229,6 @@ class User(UserMixin, db.Model):
     def is_followed_by(self,user):
         return self.followers.filter_by(follower_id=user.id).first() is not None
 
-
-
-    """
     def generate_auth_token(self,expiration):
         s = Serializer(current_app.config['SECRET_KEY'],expires_in=expiration)
         return s.dumps({"id":self.id})
@@ -243,13 +242,23 @@ class User(UserMixin, db.Model):
             return None
         return User.query.get(data['id'])
 
-    """
     def can(self, perm):
         return self.role is not None and self.role.has_permission(perm)
 
     def is_administrator(self):
         return self.can(Permission.ADMIN)
 
+    def to_json(self):
+        json_user = {
+                "url":url_for('api.get_user',id=self.id),
+                "username":self.username,
+                "member_since":self.member_since,
+                "last_seen":self.last_seen,
+                "posts_url":url_for('api.get_user_posts',id=self.id),
+                "followed_posts_url":url_for('api.get_user_followed_posts',id=self.id),
+                "post_count":self.posts.count()
+        }
+        return json_user
 
     def ping(self):
         self.last_seen = datetime.utcnow()
@@ -293,7 +302,23 @@ class Post(db.Model):
     comments = db.relationship('Comment',backref='post',lazy='dynamic')
 
     def to_json(self):
-        pass
+        json_post = {
+                "url":url_for("api.get_post",id=self.id),
+                "body":self.body,
+                "body_html":self.body_html,
+                "timestamp":self.timestamp,
+                "author_url":url_for('api.get_user',id=self.author.id),
+                'comments_url': url_for('api.get_post_comments', id=self.id),
+                "comment_count":self.comments.count()
+            }
+        return json_post
+
+    @staticmethod
+    def from_json(json_post):
+        body = json_post.get('body')
+        if body is None or body == "":
+            raise ValidationError("post does not have a body")
+        return Post(body=body)
 
     @staticmethod
     def on_changed_body(target,value,oldvalue,initiator):

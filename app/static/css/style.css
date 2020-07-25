@@ -98,7 +98,9 @@ form#new-post {
 }
 
 form#new-message .input-group-addon {
-    background-color: #FFF;
+    border: none;
+    margin: 0;
+    padding: 0;
 }
 
 ul#feed {
@@ -107,7 +109,7 @@ ul#feed {
 
 ul#feed li {
     padding:1em 1em;
-    border-bottom: 0.1rem solid #e5e5e5;
+    border-bottom: 2px solid #e5e5e5;
 }
 
 ul#feed li:last-child {
@@ -117,7 +119,7 @@ ul#feed li:last-child {
 ul#feed .feed-avatar {
     width: 13%;
     display: inline-block;
-    vertical-align: middle;
+    vertical-align: top;
 }
 
 ul#feed .feed-post {
@@ -160,29 +162,42 @@ ul#feed a {
 
 #footer {
     background-color: #222;
-    margin-top: 20px;
+    margin-top: 40px;
+    margin-bottom: 0;
     margin-bottom: 0;
     width: 100%;
     margin-right: 0;
     vertical-align: bottom;
     margin-right: 0;
+    color: white;
 }
+
+#footer ul {
+    list-style: none;
+}
+
+#footer li {
+    margin-left: 0;
+    padding-top: 10px;
+    margin-left: -40px;
+}
+
+#footer h4 {
+    font-weight: 600;
+}
+
 
 #footer a {
     color: #fff;
-    text-transform: uppercase;
     list-style: none;
     text-decoration: none;
     display: block;
+    margin-left: 0;
 
-}
-
-#footer a:hover {
-    background-color: #3333;
 }
 
 #footer .row {
-    padding: 44px;
+    padding: 10px;
 }
 
 #mainpage {
@@ -190,7 +205,35 @@ ul#feed a {
 }
 
 #profile {
-    margin-left: -20px;
+    margin-left: -60px;
     margin-right: 10px;
+    margin-top: 40px;
+    padding-right: 50px;
+    padding-left: 10px;
 }
 
+#footer .col-md-4 {
+    margin-bottom: 0;
+}
+
+#footer .bottom {
+    text-align: left;
+}
+
+#post-form {
+    border-radius: 0;
+}
+
+#post-form:focus {
+    border: 1px solid #000;
+}
+
+@media (max-width: 560px ) {
+    #footer .col-sm-12 {
+        text-align: center;
+    }
+}
+
+
+
+ 

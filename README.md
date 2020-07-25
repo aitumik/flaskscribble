@@ -17,5 +17,13 @@ If you have a linux distro then you would setup this project by following the be
 $ git clone https://github.com/Nathan-Kimutai/Flasky
 ```
 
-2.
+2. Change the working directory to the cloned application
+```bash
+cd Flasky
+```
+
+3. Install all the requirements
+```bash
+pip3 install -r requirements.txt
+```
 

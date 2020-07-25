@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block title %} Flasky -Page Not Found {% endblock %}
+{% import 'bootstrap/wtf.html' as html %}
 
 {% block page_content %}
 <div class="page-header">
@@ -47,8 +48,8 @@ user.is_following(current_user) %}
             {% endif %}
 
             <p>
-                Member since {{ moment(user.member_since).format('L') }}.<br>
-                Last seen {{ moment(user.last_seen).fromNow() }}.
+                Member since {{ user.member_since }}.<br>
+                Last seen {{ user.last_seen }}.
             </p>
 
 

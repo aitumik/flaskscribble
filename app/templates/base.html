@@ -28,7 +28,7 @@
                 <div class="navbar-collapse collapse">
                     <ul id="nav-menu" class="nav navbar-nav">
                         <li class="nav-item"><a class="nav-link" href="/">
-                                <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                                <span aria-hidden="true"></span>
                                 Home
                             </a></li>
                         {% if current_user.is_authenticated %}
@@ -50,11 +50,12 @@
                         <button type="button" class="btn btn-default dropdown-toggle thumbnail"
                             data-toggle="dropdown-menu" aria-haspopup="true" aria-expanded="false">
                             <img src="{{ current_user.gravatar(256) }}" alt="">
+                            <!-- <span class="caret"></span> -->
                         </button>
                         <ul class="dropdown-menu">
                             <li><a href="#">Profile</a></li>
                             <li><a href="#">Setting</a></li>
-                            <li class="dividor" role="separator"></li>
+                            <li class="divider" role="separator"></li>
                             <li><a href="{{url_for('auth.logout')}}">Logout</a></li>
                         </ul>
                     </div>
@@ -92,18 +93,50 @@
     <script src="{{url_for('static',filename='js/bootstrap.js')}}"></script>
 
     <footer id="footer">
-        <div class="row">
-            <div class="col-md-4">
-                <h1>You can get us on our social media platforms</h1>
+            <div class="container">
+                <div class="row my-0">
+                    <div class="col-md-4 col-sm-12 text-center-sm">
+                        <h4>Flasky Blog</h3>
+                    </div>
+                    <div class="col-md-8"></div>
+                </div>
+                <div class="row bottom">
+                    <div class="col-md-3 col-sm-12">
+                        <h4>Company</h4>
+                        <ul>
+                            <li><a href="/#about">About us</a></li>
+                            <li><a href="/#investors">Investors</a></li>
+                            <li><a href="/#blog">Blog</a></li>
+                            <li><a href="/#careers">Careers</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3 col-sm-12">
+                        <h4>Products</h4>
+                        <ul>
+                            <li><a href="/#webdesign">Webdesign</a></li>
+                            <li><a href="/#mobileapps">Mobile Apps</a></li>
+                            <li><a href="/#carpool">CarPool</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3 col-sm-12">
+                        <h4>Country</h4>
+                        <ul>
+                            <li><a href="/#kenya">Kenya</a></li>
+                            <li><a href="/#rwanda">Rwanda</a></li>
+                            <li><a href="/#uganda">Uganda</a></li>
+                            <li><a href="/#nigeria">Nigeria</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3 col-sm-12">
+                        <h4>Innovation</h4>
+                        <ul>
+                            <li><a href="/#AI">AI</a></li>
+                            <li><a href="/#biocomp">Biocomp</a></li>
+                            <li><a href="/#robotics">Robotics</a></li>
+                        </ul>
+                    </div>
+                </div>  
             </div>
-            <div class="col-md-4">
-                <ul>
-                    <li>
-                        <a href="/careers">Careers</a>
-                    </li>
-                </ul>
-            </div>
-        </div>    
     </footer>
 </body>
 

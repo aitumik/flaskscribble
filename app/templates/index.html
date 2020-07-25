@@ -7,61 +7,43 @@
 <div class="container">
     <div class="row">
         <div id="profile" class="col-md-3 hidden-sm hidden-xs">
-            <div class="card">
-                <img class="card-img-top img-responsive" src="{{url_for('static',filename='img/profile.jpeg')}}"
-                    alt="profile pic">
-                <div class="card-block">
-                    <img class="card-img img-responsive" src="{{url_for('static',filename='img/pointers.png')}}" alt="">
-                    <h4 class="card-title">Nathan Kimutai<small>@nathan</small></h4>
-                    <p class="card-text">Dogs go woofy. Did you say squitly</p>
-                    <ul class="list-inline list-unstyled">
-                        <li id="cards-tweets">
-                            <a href="#">
-                                <span class="profile-stats">Posts</span>
-                                <span class="profile-value">300</span>
-                            </a>
-                        </li>
-                        <li class="card-following">
-                            <a href="#">
-                                <span class="profile-stats">Following</span>
-                                <span class="profile-value">7</span>
-                            </a>
-                        </li>
-                        <li class="card-followers">
-                            <a href="#">
-                                <span class="profile-stats">Followers</span>
-                                <span class="profile-value">132k</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div id="main" class="col-sm-12 col-md-6">
             {% if current_user.can(Permission.WRITE) %}
             <div class="card" id="main-card">
                 <form method="POST" action="" id="new-post">
                     <div class="input-group">
-                        {{form.body(class='form-control')}}
+                        {{form.body(class='form-control',id='post-form')}}
                         <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-camera" aria-hidden="true">
-                            </span>
+                            <span class="glyphicon glyphicon-camera" aria-hidden="true"></span>
                     </div>
                 </form>
             </div>
-            {% else %}
-            <div class="alert alert-warning" role="alert">
-                You need to be logged in to post content
-            </div>
             {% endif %}
-            {% include '_posts.html' %}
-            <div class="container">
-                <div style="text-align: center;">
-                    {{ macros.pagination_widget(pagination, '.home') }}
-                    {% endblock %}
+            <h3>Post something??</h3>
+            <form>
+                <div class="form-group">
+                    <input type="text" placeholder="What is going on" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary" value="Search">
+                </div>
+            </form>
+        </div>
+        <div id="main" class="col-sm-12 col-md-6">
+            <div class="container-fluid">
+                {% include '_posts.html' %}
+                <div>
+                    <div style="text-align: center;">
+                        {{ macros.pagination_widget(pagination, '.home') }}
+                        {% endblock %}
+                    </div>
                 </div>
             </div>
         </div>
-        <div id="right-content" class="col-md-3 hidden-sm hidden-xs"></div>
+        <div id="right-content" class="col-md-3">
+            <h1>Hello world this is nathan</h1>
+            <h1>Hello world this is nathan</h1>
+            <h1>Hello world this is nathan</h1>
+            <h1>Hello world this is nathan</h1>
+        </div>
     </div>
 </div>
