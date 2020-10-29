@@ -3,7 +3,7 @@
 FlaskyBlog is a social blogging web application made with **Flask**. It allows users to **register**,**login** and more like **posting and liking**
 
 ## Author
-Nathan Kimutai[(https://github.com/Nathan-Kimutai)]
+Nathan Kimutai[(https://github.com/aitumik)]
 
 ## Installation
 
@@ -14,7 +14,7 @@ If you have a linux distro then you would setup this project by following the be
 
 1. Clone the repository to your local machine
 ```sh
-$ git clone https://github.com/Nathan-Kimutai/Flasky
+$ git clone https://github.com/aitumik/Flasky
 ```
 
 2. Change the working directory to the cloned application
