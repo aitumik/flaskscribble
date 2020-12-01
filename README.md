@@ -27,3 +27,11 @@ cd Flasky
 pip3 install -r requirements.txt
 ```
 
+## Export the environment variables
+Export the following envrironment variables for confirmation emails to be sent
+```bash
+export MAIL_ADMIN=<YOUR ADMIN MAIL>
+export MAIL_SENDER=<YOUR MAIL SENDER>
+export MAIL_USERNAME=<YOUR MAIL USERNAME>
+export MAIL_PASSWORD=<YOUR MAIL PASSWORD>
+```

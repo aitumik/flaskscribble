@@ -53,3 +53,5 @@ class CommentForm(FlaskForm):
     submit = SubmitField('Submit')
 
 
+class SearchForm(FlaskForm):
+    pass
