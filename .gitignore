@@ -5,4 +5,6 @@ data.sqlite3
 data-dev.sqlite
 data-test.sqlite
 
+.env
+
 sendgrid.env
