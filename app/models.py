@@ -72,10 +72,10 @@ class Role(db.Model):
             self.permissions -= perm
 
     def has_permission(self,perm):
-        return self.permissions & int(perm) == int(perm) 
+        return self.permissions & int(perm) == int(perm)
 
 
-    
+
     @staticmethod
     def insert_roles():
 
@@ -84,7 +84,7 @@ class Role(db.Model):
             'Moderator': [Permission.FOLLOW, Permission.COMMENT,Permission.WRITE, Permission.MODERATE],
             'Administrator': [Permission.FOLLOW, Permission.COMMENT,Permission.WRITE, Permission.MODERATE,Permission.ADMIN],
         }
-        
+
         default_role = "User"
         for r in roles:
             role = Role.query.filter_by(name=r).first()
@@ -96,7 +96,7 @@ class Role(db.Model):
             role.default = (role.name == default_role)
             db.session.add(role)
         db.session.commit()
-    
+
 
 
     def __repr__(self):
@@ -122,7 +122,7 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(64))
     location = db.Column(db.String(64))
     about_me = db.Column(db.Text())
-    member_since = db.Column(db.DateTime(),default=datetime.utcnow)  
+    member_since = db.Column(db.DateTime(),default=datetime.utcnow)
     last_seen = db.Column(db.DateTime(),default=datetime.utcnow)
     avatar_hash = db.Column(db.String(32))
     posts = db.relationship('Post',backref='author',lazy='dynamic')
@@ -147,7 +147,7 @@ class User(UserMixin, db.Model):
         super(User, self).__init__(**kwargs)
         if self.role is None:
             if str(self.email) == str(current_app.config['BLOGGING_ADMIN']):
-                self.role = Role.query.filter_by(name='Administrator').first() 
+                self.role = Role.query.filter_by(name='Administrator').first()
             if self.role is None:
                 self.role = Role.query.filter_by(default=True).first()
         if self.email is not None and self.avatar_hash is None:
@@ -162,23 +162,25 @@ class User(UserMixin, db.Model):
                 user.follow(user)
                 db.session.add(user)
                 db.session.commit()
-    
+
     @staticmethod
     def generate_fake(count=100):
         from sqlalchemy.exc import IntegrityError
         from random import seed
-        import forgery
+        from faker import Faker
 
         seed()
+        f = Faker()
         for i in range(count):
-            u = User(email=forgery.internet.email_address(),
-                    username=forgery.internet.user_name(True),
-                    password=forgery.lorem_ipsum.word(),
+            profile = f.simple_profile()
+            u = User(email=profile['mail'],
+                    username=profile['username'],
+                    password=f.password(),
                     confirmed=True,
-                    name=forgery.name.full_name(),
-                    location=forgery.address.city(),
-                    about_me = forgery.lorem_ipsum.sentence(),
-                    member_since = forgery.date.date())
+                    name=profile['name'],
+                    location=profile['address'],
+                    about_me = f.text(),
+                    member_since = f.past_date())
             db.session.add(u)
 
             try:
@@ -222,7 +224,7 @@ class User(UserMixin, db.Model):
         f = self.followed.filter_by(followed_id=user.id).first()
         if f:
             db.session.delete(f)
-    
+
     def is_following(self,user):
         return self.followed.filter_by(followed_id=user.id).first() is not None
 
@@ -263,7 +265,7 @@ class User(UserMixin, db.Model):
     def ping(self):
         self.last_seen = datetime.utcnow()
         db.session.add(self)
-    
+
     def gravatar(self,size=100,default='identicon',rating='g'):
         if request.is_secure:
             url = 'https://secure.gravatar.com/avatar'
@@ -327,19 +329,20 @@ class Post(db.Model):
 'h1', 'h2', 'h3', 'p']
         target.body_html = bleach.linkify(bleach.clean(markdown(value,output_format="html"),tags=allowed_tags,strip=True))
 
-    
+
 
     @staticmethod
     def generate_fake(count=100):
         from random import seed,randint
-        import forgery_py
+        import faker
 
         seed()
         user_count = User.query.count()
         for i in range(count):
+            f = faker.Faker()
             u = User.query.offset(randint(0,user_count -1)).first()
-            p = Post(body = forgery_py.lorem_ipsum.sentences(randint(1,3)),
-                    timestamp=forgery_py.date.date(True),
+            p = Post(body = f.text(),
+                    timestamp=f.date_time(),
                     author=u)
             db.session.add(p)
             db.session.commit()
