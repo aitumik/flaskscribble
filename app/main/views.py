@@ -5,7 +5,7 @@ from flask_login import current_user
 from flask import current_app
 from .forms import NameForm, EditProfileForm, PostForm, CommentForm
 from ..import db
-from ..models import User, Permission, Post, Comment
+from ..models import User, Permission, Post, Comment,User
 from ..decorators import admin_required, permission_required
 
 
@@ -23,8 +23,10 @@ def home():
     pagination = Post.query.order_by(Post.timestamp.desc()).paginate(
         page, per_page=10, error_out=False)
     posts = pagination.items
+    users = User.query.all()[:10]
     # posts = Post.query.order_by(Post.timestamp.desc()).all()
-    return render_template('index.html', form=form, posts=posts, pagination=pagination)
+    return render_template('index.html', form=form, posts=posts, \
+            pagination=pagination,users=users)
 
 @main.route("/all")
 @login_required

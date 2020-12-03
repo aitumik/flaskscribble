@@ -18,7 +18,7 @@
                 {{ follow.user.username }}
             </a>
         </td>
-        <td>{{ moment(follow.timestamp).format('L') }}</td>
+        <td>{{ follow.timestamp }}</td>
     </tr>
     {% endif %}
     {% endfor %}
