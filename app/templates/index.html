@@ -13,11 +13,13 @@
             </div>
             {% endif %}
             <h1>Top Users</h1>
-            {% for user in users %}
-              <div>
-                <small>{{user.username}}</small>
-              </div>
-            {% endfor %}
+            <div class="top-users">
+              {% for user in users %}
+                <div>
+                  <small>{{user.username}}</small>
+                </div>
+              {% endfor %}
+            </div>
         </div>
         <div id="main" class="col-sm-12 col-md-6">
             <div class="container-fluid">

@@ -33,6 +33,10 @@ body {
     background-color: #fff;
 }
 
+.top-users {
+  display: flex;
+}
+
 .card-img-top {
     border-radius: 0.4rem 0.4rem 0 0 ;
 }
