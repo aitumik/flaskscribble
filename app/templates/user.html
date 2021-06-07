@@ -24,7 +24,7 @@
             {% if not current_user.is_following(user) %}
             <a href="{{ url_for('.follow', username=user.username) }}" class="btn btn-primary">Follow</a>
             {% else %}
-            <a href="{{ url_for('.unfollow', username=user.username) }}" class="btn btn-default">Unfollow</a>
+            <a href="{{ url_for('.unfollow', username=user.username) }}" class="btn btn-danger">Unfollow</a>
             {% endif %}
             {% endif %}
             <a href="{{ url_for('.followers', username=user.username) }}">
